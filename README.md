@@ -17,3 +17,26 @@ Install the gem dependencies with:
 And then start Guard:
 
     bundle exec guard
+
+Using with CoffeeScript
+-----------------------
+When it compiles to JavaScript, all CoffeeScript is wrapped in an
+anonymous function. Therefore, in order for a class to be accessible
+by the Jasmine spec, it needs to be attached to the global window
+object. For example:
+
+spec/CellSpec.coffee
+
+    describe "Cell", ->
+      cell = new Cell()
+      
+      it "does stuff", ->
+        expect(cell.does()).toEqual('stuff')
+
+lib/Cell.coffee
+
+    class Cell
+      does: ->
+        'stuff'
+
+    window.Cell = Cell
